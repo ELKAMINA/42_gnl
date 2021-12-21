@@ -6,12 +6,17 @@
 # include <string.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <stdlib.h>
+
 
 
 void	ft_putnbr_fd(int nb, int fd);
 void	ft_putstr_fd(char *str, int fd);
 void	ft_putchar_fd(char s, int fd);
 char    *get_next_line(int  fd);
-
+int	    ft_strchr(char *s, int c);
+char	*ft_strjoin(char *s1, char	*s2);
+char	*ft_strdup(char *s1);
+size_t	ft_strlen(char *str);
 
 #endif

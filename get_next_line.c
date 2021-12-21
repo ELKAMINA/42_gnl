@@ -1,31 +1,40 @@
 #include "get_next_line.h"
 
+
 char    *get_next_line(int  fd)
 {
-    char        tmp[BUFFER_SIZE + 1];
-    //static char *final_buff;
-    int         ret_val;
+    char        buf[BUFFER_SIZE + 1];
+    static char *statical;
+    int         i = 0;
+    int         ret_val; 
 
-    if  (fd == -1)
-        ft_putstr_fd("Open file Error", 1);
-    //printf("fd %d", fd);
-    //printf("BUFF SIZE %d", BUFFER_SIZE);
-    while ((ret_val = read(fd, tmp, BUFFER_SIZE)))
+    ret_val = 1;
+    while (ret_val != 0 && (ft_strchr(statical, '\n') == 0))
     {
-        tmp[ret_val] = '\0';
-        //ft_putstr_fd(tmp, 1);
-        printf("*************%s*********** \n", tmp);                   
+        ret_val = read(fd, buf, BUFFER_SIZE);
+        printf("retvalue %d", ret_val);
+        buf[ret_val] = '\0';
+        statical = ft_strjoin(statical, buf);
     }
-    //printf("ret_value %d", ret_val);
+    printf("sttical = %s", statical);
     return ("HELLO");
 }               
 
 int main()
 {
     int fd;
+    //char *yo;
 
-    fd = open("42", O_RDWR | O_CREAT, S_IRWXU);
-    if  (fd == -1)
-        ft_putstr_fd("Open file Error", 1);
+    fd = open("42", O_RDONLY);
+    printf("fd %d", fd);
     get_next_line(fd);
+    /*for(int i = 0; i < 100; i++)
+    {
+        yo = get_next_line(fd);
+        if (!yo)
+            break;
+        free(yo);
+    }
+    close(fd);
+    */
 }
