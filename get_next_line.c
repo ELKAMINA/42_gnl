@@ -15,8 +15,7 @@ char    *get_next_line(int  fd)
         buf[ret_val] = '\0';
         final = ft_strjoin(final, buf);
     }
-    printf("final = %s", final);
-    return ("HELLO");
+    return (final);
 }               
 
 int main()
@@ -24,9 +23,13 @@ int main()
     int fd;
     //char *yo;
 
-    fd = open("42", O_RDONLY);
+    fd = open("55", O_RDONLY | O_CREAT);
     //printf("fd %d", fd);
-    get_next_line(fd);
+    for (size_t i = 0; i < 5 ; i++)
+    {
+        printf("%s", get_next_line(fd));
+    }
+    
     /*for(int i = 0; i < 100; i++)
     {
         yo = get_next_line(fd);
