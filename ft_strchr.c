@@ -10,6 +10,8 @@ int	ft_strchr(char *s, int c)
 	sent = (char *)s;
 	character = (unsigned char)c;
 	i = 0;
+	if	(!s)
+		return (0);
 	while (i <= ft_strlen(s))
 	{
 		if (sent[i] == character)

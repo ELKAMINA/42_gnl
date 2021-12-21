@@ -4,19 +4,18 @@
 char    *get_next_line(int  fd)
 {
     char        buf[BUFFER_SIZE + 1];
-    static char *statical;
-    int         i = 0;
-    int         ret_val; 
+    static char *final;
+    int         ret_val;
 
     ret_val = 1;
-    while (ret_val != 0 && (ft_strchr(statical, '\n') == 0))
+    while (ret_val != 0 && (ft_strchr(final, '\n') == 0))
     {
         ret_val = read(fd, buf, BUFFER_SIZE);
-        printf("retvalue %d", ret_val);
+        printf("****retvalue = %d ****** || **** copy = %s ****\n", ret_val, buf);
         buf[ret_val] = '\0';
-        statical = ft_strjoin(statical, buf);
+        final = ft_strjoin(final, buf);
     }
-    printf("sttical = %s", statical);
+    printf("final = %s", final);
     return ("HELLO");
 }               
 
@@ -26,7 +25,7 @@ int main()
     //char *yo;
 
     fd = open("42", O_RDONLY);
-    printf("fd %d", fd);
+    //printf("fd %d", fd);
     get_next_line(fd);
     /*for(int i = 0; i < 100; i++)
     {
