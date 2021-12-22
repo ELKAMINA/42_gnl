@@ -6,7 +6,7 @@
 /*   By: ael-khat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 17:22:11 by ael-khat          #+#    #+#             */
-/*   Updated: 2021/12/22 17:34:39 by ael-khat         ###   ########.fr       */
+/*   Updated: 2021/12/22 18:52:45 by ael-khat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,25 @@
 
 char	*read_get_nls(int fd, char *next_sentence)
 {
-	char	buf[BUFFER_SIZE + 1];
+	char	*buf;
 	int		ret_val;
 
 	ret_val = 1;
+	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!buf)
+		return (NULL);
 	while (ret_val != 0 && (ft_strchr(next_sentence, '\n') == 0))
 	{
 		ret_val = read(fd, buf, BUFFER_SIZE);
+		if (ret_val == -1)
+		{
+			free(buf);
+			return (NULL);
+		}
 		buf[ret_val] = '\0';
 		next_sentence = ft_strjoin(next_sentence, buf);
 	}
+	free(buf);
 	return (next_sentence);
 }
 
@@ -99,11 +108,25 @@ char	*get_next_line(int fd)
 	static char	*next_sentence;
 	char		*string_to_display;
 
-	if (fd <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	fst_nls = read_get_nls(fd, next_sentence);
 	next_index = get_index_nl(fst_nls);
 	string_to_display = get_string_nl(fst_nls);
 	next_sentence = next_sent(next_index, fst_nls);
+	if (!string_to_display)
+		return (NULL);
 	return (string_to_display);
 }
+
+/*int	main()
+{
+	int	fd;
+
+	fd = open("44", O_RDONLY);
+	for (int i = 0; i < 6;  i++) 
+	{
+		printf("%s", get_next_line(fd));
+	}
+}
+*/
