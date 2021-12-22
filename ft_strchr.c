@@ -15,7 +15,7 @@ int	ft_strchr(char *s, int c)
 	while (i <= ft_strlen(s))
 	{
 		if (sent[i] == character)
-			return (1);
+			return (i);
 		i ++;
 	}
 	return (0);
