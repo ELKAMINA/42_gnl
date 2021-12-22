@@ -1,6 +1,5 @@
 #include "get_next_line.h"
 
-
 char    *read_get_nls(int  fd, char *next_sentence)
 {
     char        buf[BUFFER_SIZE + 1];
@@ -13,75 +12,86 @@ char    *read_get_nls(int  fd, char *next_sentence)
         buf[ret_val] = '\0';
         next_sentence = ft_strjoin(next_sentence, buf);
     }
-    printf("******return value %d\n********", ret_val);
     return (next_sentence);
 }
 
-
-int   get_nl_display(char   *result)
+int   get_index_nl(char   *result)
 {
-       static int   i;
-       //char         *tmp;
-       int          j;
+    int     i;
+    char    *tmp;
+    int     j;
 
-       i = ft_strchr(result, '\n');
-       /*if   (i == 0)
-       {
-           tmp = malloc(sizeof(char) * f)
-       }
-        */
-       j = 0;
-       while (j <= i)
-       {
-           write (1, &result[j], 1);
-           j ++;
-       }
-       i ++;
-       //printf(" index pour le premier backslash %d", i);
-       return (i);
+    i = 0;
+    j = 0;
+    while (result[i] && result[i] != '\n')
+        i++;
+    if  (result[i] == '\n')
+        tmp = malloc(sizeof(char) * i + 1 );
+    else 
+        tmp = malloc(sizeof(char) * i);
+    while (result[j] &&  result[j] != '\n')
+    {
+        tmp[j] = result[j];
+        j++;
+    } 
+    if  (result[j] =='\n')
+    {
+        tmp[j] = '\n';
+        j++;
+        }    
+    tmp[j] = '\n';
+    i = i + 1;
+    return (i);
+}
+
+char   *get_string_nl(char   *result)
+{
+    int     i;
+    char    *tmp;
+    int     j;
+
+    i = 0;
+    j = 0;
+    while (result[i] && result[i] != '\n')
+        i++;
+    if   (result[i] == '\n')
+        tmp = malloc(sizeof(char) * i + 1 );
+    else 
+        tmp = malloc(sizeof(char) * i);
+    while (result[j] &&  result[j] != '\n')
+    {
+        tmp[j] = result[j];
+        j++;
+    } 
+    if (result[j] =='\n')
+    {
+        tmp[j] = '\n';
+        j++;
+        }    
+    return (tmp);
 }
 
 char    *next_sent(int  i, char *final)
 {
-    static char    *memory;
+    char    *memory;
 
+    memory = malloc(sizeof(char) * (ft_strlen(final) - i + 1));
     memory = ft_strcpy(memory, final, i);
     return (memory);
 }
 
-
 char    *get_next_line(int fd)
 {
-    char    *fst_nls; // ma chaine qui va contenir les NL
-    static int     next_index; // stocke l'index de fin de phrase avant le premier \n
+    char    *fst_nls; 
+    int     next_index;
     static char    *next_sentence;
-
-    fst_nls = read_get_nls(fd, next_sentence);
-    // read-get-nl me renvoie les premieres phrases contenant \n : Hello>Zine>\ncava>\ntu>\0 ou > est un espace;
-    next_index = get_nl_display(fst_nls); // j'envoie mon fst nl a get-nl-display pour quelle maffiche les phrases et pour quelle me renvoie l'index juste apres le premier \n
-    next_sentence = next_sent(next_index, fst_nls);
-    return (NULL);
-}
-
-int main()
-{
-    int fd;
-    //char *yo;
-
-    fd = open("55", O_RDONLY | O_CREAT);
-    //printf("fd %d", fd);
-    for (size_t i = 0; i < 2 ; i++)
-    {
-        printf("******************* %s ******************\n", get_next_line(fd));
-    }
+    char    *string_to_display;
     
-    /*for(int i = 0; i < 100; i++)
-    {
-        yo = get_next_line(fd);
-        if (!yo)
-            break;
-        free(yo);
-    }
-    close(fd);
-    */
+    if  (fd <= 0)
+        return (NULL);
+    fst_nls = read_get_nls(fd, next_sentence);
+    next_index = get_index_nl(fst_nls);
+    string_to_display = get_string_nl(fst_nls);
+    next_sentence = next_sent(next_index, fst_nls);
+    return (string_to_display);
 }

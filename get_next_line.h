@@ -8,14 +8,10 @@
 # include <fcntl.h>
 # include <stdlib.h>
 
-
-
-//void	ft_putnbr_fd(int nb, int fd);
-//void	ft_putstr_fd(char *str, int fd);
-//void	ft_putchar_fd(char s, int fd);
 char    *get_next_line(int  fd);
 char    *read_get_nls(int  fd, char *next_sentence);
-int     get_nl_display(char   *result);
+int     get_index_nl(char   *result);
+char   *get_string_nl(char   *result);
 char    *next_sent(int  i, char *final);
 int	    ft_strchr(char *s, int c);
 char	*ft_strjoin(char *s1, char	*s2);
