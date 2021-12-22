@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ael-khat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/22 17:38:03 by ael-khat          #+#    #+#             */
+/*   Updated: 2021/12/22 17:39:17 by ael-khat         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "get_next_line.h"
 
@@ -10,7 +21,7 @@ int	ft_strchr(char *s, int c)
 	sent = (char *)s;
 	character = (unsigned char)c;
 	i = 0;
-	if	(!s)
+	if (!s)
 		return (0);
 	while (i <= ft_strlen(s))
 	{
@@ -21,7 +32,7 @@ int	ft_strchr(char *s, int c)
 	return (0);
 }
 
-char	*ft_strcpy(char	*dest, char	*src, int	i)
+char	*ft_strcpy(char *dest, char *src, int i)
 {
 	int	j;
 
