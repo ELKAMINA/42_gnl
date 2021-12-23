@@ -22,7 +22,7 @@
 char	*get_next_line(int fd);
 char	*read_get_nls(int fd, char *next_sentence);
 int		get_index_nl(char *result);
-char	*get_string_nl(char *result);
+char	*get_string_nl(char *result, int next_index);
 char	*next_sent(int i, char *final);
 int		ft_strchr(char *s, int c);
 char	*ft_strjoin(char *s1, char *s2);
