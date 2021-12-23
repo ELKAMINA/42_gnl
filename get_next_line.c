@@ -21,7 +21,7 @@ char	*read_get_nls(int fd, char *read_sentence)
 	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buf)
 		return (NULL);
-	while (ret_val != 0 && (ft_strchr(read_sentence, '\n') == 0))
+	while (ret_val != 0 && (!ft_strchr(read_sentence, '\n')))
 	{
 		ret_val = read(fd, buf, BUFFER_SIZE);
 		if (ret_val == -1)
@@ -30,9 +30,7 @@ char	*read_get_nls(int fd, char *read_sentence)
 			return (NULL);
 		}
 		buf[ret_val] = '\0';
-		//printf("buffer %s || ret_value = %d\n", buf, ret_val);
 		read_sentence = ft_strjoin(read_sentence, buf);
-		//printf("READ SENTENCE %s \n", read_sentence);
 	}
 	free(buf);
 	return (read_sentence);
@@ -41,51 +39,57 @@ char	*read_get_nls(int fd, char *read_sentence)
 int	get_index_nl(char	*result)
 {
 	int		i;
-	// char	*tmp;
-	// int		j;
 
 	i = 0;
-	// j = 0;
 	while (result[i] && result[i] != '\n')
 		i++;
-	i = i + 1;
 	return (i);
 }
 
 char	*get_string_nl(char		*result, int	next_index)
 {
-	//int		i;
 	char	*tmp;
 	int		j;
 
-	//i = 0;
 	j = 0;
-	// while (result[i] && result[i] != '\n')
-	// 	i++;
-	if (result[next_index - 1] == '\n')
-		tmp = malloc(sizeof(char) * next_index);
+	if (result[next_index] == '\n')
+		tmp = malloc(sizeof(char) * next_index + 1);
 	else
-		tmp = malloc(sizeof(char) * (next_index - 1));
+		tmp = malloc(sizeof(char) * (next_index));
 	while (result[j] && j < next_index)
 	{
 		tmp[j] = result[j];
 		j++;
 	}
+	if (result[next_index] == '\n')
+	{
+		tmp[j] = '\n';
+		j++;
+	}
 	tmp[j] = '\0';
-	// if (result[j] == '\n')
-	// {
-	// 	tmp[j] = '\n';
-	// 	j++;
-	// }
 	return (tmp);
 }
 
 char	*next_sent(int i, char *final)
 {
 	char	*memory;
+	int		size_rest;
+	int		j;
 
-	memory = malloc(sizeof(char) * (ft_strlen(final) - i + 1));
-	memory = ft_strcpy(memory, final, i);
+	j = 0;
+	size_rest = ft_strlen(final) - i;
+	if	(!final[i + 1])
+	{
+		free(final);
+		return (NULL);
+	}
+	memory = malloc(sizeof(char) * (size_rest));
+	while (j < size_rest)
+	{
+		memory[j] = final[i + 1 + j];
+		j++;
+	}
+	memory[j] = '\0';
 	return (memory);
 }
 
@@ -99,10 +103,9 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	fst_nls = read_get_nls(fd, next_sentence);
-	if (!fst_nls[0])
+	if (!fst_nls)
 		return (NULL);
 	next_index = get_index_nl(fst_nls);
-	printf(" ft_nls %s-----\n", fst_nls);
 	string_to_display = get_string_nl(fst_nls, next_index);
 	if (!string_to_display)
 		return (NULL);
@@ -115,9 +118,9 @@ char	*get_next_line(int fd)
 	int	fd;
 
 	fd = open("44", O_RDONLY);
-	for (int i = 0; i < 7;  i++) 
+	for (int i = 0; i < 5;  i++) 
 	{
-		printf("--- main = %s--- || i = %d \n", get_next_line(fd), i );
+		printf("%s ----- ", get_next_line(fd));
 	}
 }
 */
