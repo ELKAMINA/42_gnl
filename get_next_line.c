@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-khat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aminaelk <aminaelk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 17:22:11 by ael-khat          #+#    #+#             */
-/*   Updated: 2021/12/22 18:52:45 by ael-khat         ###   ########.fr       */
+/*   Updated: 2021/12/23 11:40:51 by aminaelk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	get_index_nl(char	*result)
 		tmp = malloc(sizeof(char) * i + 1);
 	else
 		tmp = malloc(sizeof(char) * i);
-	while (result[j] && result[j] != '\n')
+	while (j < i)
 	{
 		tmp[j] = result[j];
 		j++;
@@ -60,7 +60,6 @@ int	get_index_nl(char	*result)
 		tmp[j] = '\n';
 		j++;
 	}
-	tmp[j] = '\n';
 	i = i + 1;
 	return (i);
 }
@@ -111,22 +110,31 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	fst_nls = read_get_nls(fd, next_sentence);
+	if (!fst_nls)
+		return (NULL);
 	next_index = get_index_nl(fst_nls);
 	string_to_display = get_string_nl(fst_nls);
-	next_sentence = next_sent(next_index, fst_nls);
 	if (!string_to_display)
 		return (NULL);
+	next_sentence = next_sent(next_index, fst_nls);
+	printf("****Je suis NEXT SENTENCE = %s*****\n", next_sentence);
+	/*if ((*string_to_display = '0'))
+	{
+		free(next_sentence);
+		next_sentence = NULL;
+		return (NULL);
+	}
+	*/
 	return (string_to_display);
 }
 
-/*int	main()
+int	main()
 {
 	int	fd;
 
 	fd = open("44", O_RDONLY);
-	for (int i = 0; i < 6;  i++) 
+	for (int i = 0; i < 9;  i++) 
 	{
-		printf("%s", get_next_line(fd));
+		printf("--- main = %s---", get_next_line(fd));
 	}
 }
-*/
