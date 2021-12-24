@@ -6,7 +6,7 @@
 /*   By: aminaelk <aminaelk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 17:22:11 by ael-khat          #+#    #+#             */
-/*   Updated: 2021/12/24 16:24:53 by ael-khat         ###   ########.fr       */
+/*   Updated: 2021/12/24 17:08:40 by ael-khat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ char	*get_string_nl(char		*result, int	next_index)
 
 	j = 0;
 	if (result[next_index] == '\n')
-		tmp = malloc(sizeof(char) * next_index + 1);
+		tmp = malloc(sizeof(char) * next_index + 2);
 	else
-		tmp = malloc(sizeof(char) * (next_index));
+		tmp = malloc(sizeof(char) * (next_index + 1));
 	while (result[j] && j < next_index)
 	{
 		tmp[j] = result[j];
@@ -83,7 +83,7 @@ char	*next_sent(int i, char *final)
 		free(final);
 		return (NULL);
 	}
-	memory = malloc(sizeof(char) * size_rest);
+	memory = malloc(sizeof(char) * size_rest + 1);
 	i++;
 	while (j < size_rest)
 	{
@@ -91,6 +91,7 @@ char	*next_sent(int i, char *final)
 		j++;
 	}
 	memory[j] = '\0';
+	free(final);
 	return (memory);
 }
 
@@ -104,6 +105,14 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	fst_nls = read_get_nls(fd, next_sentence);
+	if	(!fst_nls)
+		return (NULL);
+	if (!fst_nls[0])
+	{
+		free(fst_nls);
+		fst_nls = NULL;
+		return (NULL);
+	}
 	next_index = get_index_nl(fst_nls);
 	string_to_display = get_string_nl(fst_nls, next_index);
 	next_sentence = next_sent(next_index, fst_nls);
