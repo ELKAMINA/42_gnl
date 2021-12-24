@@ -23,29 +23,13 @@ int	ft_strchr(char *s, int c)
 	i = 0;
 	if (!s)
 		return (0);
-	while (i <= ft_strlen(s))
+	while (i <= ft_strlen(sent))
 	{
 		if (sent[i] == character)
 			return (i);
 		i ++;
 	}
 	return (0);
-}
-
-char	*ft_strcpy(char *dest, char *src, int i)
-{
-	int	j;
-
-	j = 0;
-	dest = malloc(sizeof(char) * (ft_strlen(src) - i) + 1);
-	while (src[i])
-	{
-		dest[j] = src[i];
-		i++;
-		j++;
-	}
-	dest[j] = '\0';
-	return (dest);
 }
 
 char	*ft_strdup(char *s1)

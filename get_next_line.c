@@ -6,7 +6,7 @@
 /*   By: aminaelk <aminaelk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 17:22:11 by ael-khat          #+#    #+#             */
-/*   Updated: 2021/12/23 11:40:51 by aminaelk         ###   ########.fr       */
+/*   Updated: 2021/12/24 16:24:53 by ael-khat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*read_get_nls(int fd, char *read_sentence)
 	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buf)
 		return (NULL);
-	while (ret_val != 0 && (!ft_strchr(read_sentence, '\n')))
+	while (ret_val != 0 && (ft_strchr(read_sentence, '\n') == 0))
 	{
 		ret_val = read(fd, buf, BUFFER_SIZE);
 		if (ret_val == -1)
@@ -78,15 +78,16 @@ char	*next_sent(int i, char *final)
 
 	j = 0;
 	size_rest = ft_strlen(final) - i;
-	if	(!final[i + 1])
+	if	(!final[i])
 	{
 		free(final);
 		return (NULL);
 	}
-	memory = malloc(sizeof(char) * (size_rest));
+	memory = malloc(sizeof(char) * size_rest);
+	i++;
 	while (j < size_rest)
 	{
-		memory[j] = final[i + 1 + j];
+		memory[j] = final[i + j];
 		j++;
 	}
 	memory[j] = '\0';
@@ -103,12 +104,8 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	fst_nls = read_get_nls(fd, next_sentence);
-	if (!fst_nls)
-		return (NULL);
 	next_index = get_index_nl(fst_nls);
 	string_to_display = get_string_nl(fst_nls, next_index);
-	if (!string_to_display)
-		return (NULL);
 	next_sentence = next_sent(next_index, fst_nls);
 	return (string_to_display);
 }
@@ -117,10 +114,12 @@ char	*get_next_line(int fd)
 {
 	int	fd;
 
-	fd = open("44", O_RDONLY);
+	fd = open("new", O_RDONLY);
 	for (int i = 0; i < 5;  i++) 
 	{
-		printf("%s ----- ", get_next_line(fd));
+		//printf("%s ----- ", get_next_line(fd));
+		get_next_line(fd);
+		printf("-----Appel n%d SAUT A LA LIGNE %c", i, '\n');
 	}
 }
 */
