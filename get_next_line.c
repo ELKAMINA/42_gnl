@@ -6,7 +6,7 @@
 /*   By: aminaelk <aminaelk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 17:22:11 by ael-khat          #+#    #+#             */
-/*   Updated: 2021/12/24 17:08:40 by ael-khat         ###   ########.fr       */
+/*   Updated: 2021/12/25 13:08:25 by aminaelk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,17 +118,3 @@ char	*get_next_line(int fd)
 	next_sentence = next_sent(next_index, fst_nls);
 	return (string_to_display);
 }
-
-/*int	main()
-{
-	int	fd;
-
-	fd = open("new", O_RDONLY);
-	for (int i = 0; i < 5;  i++) 
-	{
-		printf("%s ----- ", get_next_line(fd));
-		// get_next_line(fd);
-		// printf("-----Appel n%d SAUT A LA LIGNE %c", i, '\n');
-	}
-}
-*/

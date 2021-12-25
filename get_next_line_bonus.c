@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aminaelk <aminaelk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 17:22:11 by ael-khat          #+#    #+#             */
-/*   Updated: 2021/12/24 17:08:40 by ael-khat         ###   ########.fr       */
+/*   Updated: 2021/12/25 13:08:06 by aminaelk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*read_get_nls(int fd, char *read_sentence)
 {
@@ -99,12 +99,12 @@ char	*get_next_line(int fd)
 {
 	char		*fst_nls;
 	int			next_index;
-	static char	*next_sentence;
+	static char	*next_sentence[OPEN_MAX];
 	char		*string_to_display;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > OPEN_MAX)
 		return (NULL);
-	fst_nls = read_get_nls(fd, next_sentence);
+	fst_nls = read_get_nls(fd, next_sentence[fd]);
 	if	(!fst_nls)
 		return (NULL);
 	if (!fst_nls[0])
@@ -115,20 +115,6 @@ char	*get_next_line(int fd)
 	}
 	next_index = get_index_nl(fst_nls);
 	string_to_display = get_string_nl(fst_nls, next_index);
-	next_sentence = next_sent(next_index, fst_nls);
+	next_sentence[fd] = next_sent(next_index, fst_nls);
 	return (string_to_display);
 }
-
-/*int	main()
-{
-	int	fd;
-
-	fd = open("new", O_RDONLY);
-	for (int i = 0; i < 5;  i++) 
-	{
-		printf("%s ----- ", get_next_line(fd));
-		// get_next_line(fd);
-		// printf("-----Appel n%d SAUT A LA LIGNE %c", i, '\n');
-	}
-}
-*/
