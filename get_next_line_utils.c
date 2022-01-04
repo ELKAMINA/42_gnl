@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aminaelk <aminaelk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-khat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/22 17:38:03 by ael-khat          #+#    #+#             */
-/*   Updated: 2021/12/25 13:08:44 by aminaelk         ###   ########.fr       */
+/*   Created: 2022/01/04 15:14:19 by ael-khat          #+#    #+#             */
+/*   Updated: 2022/01/04 15:14:36 by ael-khat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,16 @@
 
 int	ft_strchr(char *s, int c)
 {
-	char			*sent;
-	unsigned char	character;
-	size_t			i;
+	int	i;
 
-	sent = (char *)s;
-	character = (unsigned char)c;
 	i = 0;
 	if (!s)
 		return (0);
-	while (i <= ft_strlen(sent))
+	while (s[i])
 	{
-		if (sent[i] == character)
+		if (s[i] == (char)c)
 			return (i);
-		i ++;
+		i++;
 	}
 	return (0);
 }
@@ -81,7 +77,7 @@ char	*ft_strjoin(char *s1, char	*s2)
 
 size_t	ft_strlen(char *str)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (str[i])

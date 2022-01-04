@@ -1,22 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ael-khat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/04 15:14:56 by ael-khat          #+#    #+#             */
+/*   Updated: 2022/01/04 15:15:15 by ael-khat         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
 int	ft_strchr(char *s, int c)
 {
-	char			*sent;
-	unsigned char	character;
-	size_t			i;
+	int	i;
 
-	sent = (char *)s;
-	character = (unsigned char)c;
 	i = 0;
 	if (!s)
 		return (0);
-	while (i <= ft_strlen(sent))
+	while (s[i])
 	{
-		if (sent[i] == character)
+		if (s[i] == (char)c)
 			return (i);
-		i ++;
+		i++;
 	}
 	return (0);
 }
@@ -70,7 +77,7 @@ char	*ft_strjoin(char *s1, char	*s2)
 
 size_t	ft_strlen(char *str)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (str[i])

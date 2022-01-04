@@ -3,89 +3,86 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aminaelk <aminaelk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-khat <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/22 17:22:11 by ael-khat          #+#    #+#             */
-/*   Updated: 2021/12/25 13:08:06 by aminaelk         ###   ########.fr       */
+/*   Created: 2022/01/04 15:11:50 by ael-khat          #+#    #+#             */
+/*   Updated: 2022/01/04 15:12:55 by ael-khat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char	*read_get_nls(int fd, char *read_sentence)
+char	*read_get_nls(int fd, char *tmp)
 {
 	char	*buf;
-	int		ret_val;
+	int		v_ret;
 
-	ret_val = 1;
-	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	v_ret = 1;
+	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (NULL);
-	while (ret_val != 0 && (ft_strchr(read_sentence, '\n') == 0))
+	while (v_ret != 0 && !ft_strchr(tmp, '\n'))
 	{
-		ret_val = read(fd, buf, BUFFER_SIZE);
-		if (ret_val == -1)
+		v_ret = read(fd, buf, BUFFER_SIZE);
+		if (v_ret == -1)
 		{
 			free(buf);
 			return (NULL);
-		}
-		buf[ret_val] = '\0';
-		read_sentence = ft_strjoin(read_sentence, buf);
+		}				
+		buf[v_ret] = '\0';
+		tmp = ft_strjoin(tmp, buf);
 	}
 	free(buf);
-	return (read_sentence);
+	return (tmp);
 }
 
-int	get_index_nl(char	*result)
+char	*get_string_nl(char		*result)
 {
-	int		i;
+	char			*tmp;
+	unsigned long	j;
+	unsigned long	i;
 
+	j = 0;
 	i = 0;
 	while (result[i] && result[i] != '\n')
 		i++;
-	return (i);
-}
-
-char	*get_string_nl(char		*result, int	next_index)
-{
-	char	*tmp;
-	int		j;
-
-	j = 0;
-	if (result[next_index] == '\n')
-		tmp = malloc(sizeof(char) * next_index + 2);
+	if (result[i] == '\n')
+		tmp = malloc(sizeof(char) * i + 2);
 	else
-		tmp = malloc(sizeof(char) * (next_index + 1));
-	while (result[j] && j < next_index)
+		tmp = malloc(sizeof(char) * (i + 1));
+	if (!tmp)
+		return (NULL);
+	while (result[j] && j < i)
 	{
 		tmp[j] = result[j];
 		j++;
 	}
-	if (result[next_index] == '\n')
-	{
-		tmp[j] = '\n';
-		j++;
-	}
+	if (result[j] == '\n')
+		tmp[j++] = '\n';
 	tmp[j] = '\0';
 	return (tmp);
 }
 
-char	*next_sent(int i, char *final)
+char	*next_sent(char *final)
 {
-	char	*memory;
-	int		size_rest;
-	int		j;
+	char				*memory;
+	unsigned long		j;
+	unsigned long		i;
 
-	j = 0;
-	size_rest = ft_strlen(final) - i;
-	if	(!final[i])
+	i = 0;
+	while (final[i] && final[i] != '\n')
+		i++;
+	if (!final[i])
 	{
 		free(final);
 		return (NULL);
 	}
-	memory = malloc(sizeof(char) * size_rest + 1);
+	memory = malloc(sizeof(char) * (ft_strlen(final) - i) + 1);
+	if (!memory)
+		return (NULL);
 	i++;
-	while (j < size_rest)
+	j = 0;
+	while (final[i + j])
 	{
 		memory[j] = final[i + j];
 		j++;
@@ -97,24 +94,21 @@ char	*next_sent(int i, char *final)
 
 char	*get_next_line(int fd)
 {
-	char		*fst_nls;
-	int			next_index;
-	static char	*next_sentence[OPEN_MAX];
+	static char	*next_sentence[1024];
 	char		*string_to_display;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > OPEN_MAX)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 1024)
 		return (NULL);
-	fst_nls = read_get_nls(fd, next_sentence[fd]);
-	if	(!fst_nls)
+	next_sentence[fd] = read_get_nls(fd, next_sentence[fd]);
+	if (!next_sentence[fd])
 		return (NULL);
-	if (!fst_nls[0])
+	if (!next_sentence[fd][0])
 	{
-		free(fst_nls);
-		fst_nls = NULL;
+		free(next_sentence[fd]);
+		next_sentence[fd] = NULL;
 		return (NULL);
 	}
-	next_index = get_index_nl(fst_nls);
-	string_to_display = get_string_nl(fst_nls, next_index);
-	next_sentence[fd] = next_sent(next_index, fst_nls);
+	string_to_display = get_string_nl(next_sentence[fd]);
+	next_sentence[fd] = next_sent(next_sentence[fd]);
 	return (string_to_display);
 }
